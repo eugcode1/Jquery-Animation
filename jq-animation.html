@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>JQuery Animation effect</title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js'></script>
+<link rel="stylesheet" href="jq/ani.css" />
+</head>
+<body>
+<div id="parent">  
+<h2> Jquery Animation Sheet</h2>
+<p id="by">
+            by Qijia(Sandra) Cao</p>
+<hr id = "hr1" >
+<div class = "header" id="header"> </div>
+<hr id = "hr2" >
+
+
+<div class = "section">
+	<h4>&raquo; Image Rotation</h4>
+    <div id="photoShow">
+            <div class="current">
+                <img src="images/1.jpg" alt="Photo Gallery" class="gallery" />
+            </div>
+            <div>
+                <img src="images/2.jpg" alt="Photo Gallery" class="gallery" />
+            </div>
+            <div>
+                <img src="images/3.jpg" alt="Photo Gallery" class="gallery" />
+            </div>
+            <div>
+                <img src="images/4.jpg" alt="Photo Gallery" class="gallery" />
+            </div>
+			<div>
+                <img src="images/5.jpg" alt="Photo Gallery" class="gallery" />
+            </div>
+    </div>
+</div>
+
+<div class = "section">
+    <h4>&raquo; Sliding Effects</h4>
+    <button id="slideup">Slide Up</button>
+    <button id="slidedown">Slide Down</button>
+    <button id="slidetoggle">Toggle Slide</button>
+    <div class = "box" id = "Sliding">Sliding Me</div>
+</div>
+<div class = "section">
+<h4>&raquo; Fading Effects</h4>
+    <div class = "button2">
+      <button id="fadein">Fade In</button>
+      <button id="fadeout">Fade Out</button>
+      <button id="fadeto3">Fade To .3</button>
+      <button id="fadeup">Fade Toggle</button>
+    </div>
+	<div class = "box" id = "Fading"><p>Fading Me</p></div>
+</div>
+
+<div class = "section">
+    <h4>&raquo; Animation Effect</h4>
+    <button id="right">Grow Right</button>
+    <button id="text">Big Text</button>
+    <button id="Move">Move Div</button>
+    <button id="go4">&raquo; Reset</button>
+    <div class ="box" id="Animate"><p>Animating Me</p></div>
+</div>
+
+<div class = "section">
+    <h4>&raquo; Text Maginifier</h4>
+    <div class = "button2">
+        <button id="incfont">A+</button>
+        <button id="decfont">A-</button>
+    </div>
+    <div id="TextMag" style="height:50px"> Text Magnifier </div>
+	</div>
+</div>
+<script text = "text/javascript">
+		
+		/*Animation*/
+		//higlight list using toggleclass
+		/*
+		$("#header:li").hover(
+            function() {
+                $(this).toggleClass("highlight");
+            },
+            function() {
+                $(this).toggleClass("highlight");
+            }
+        );
+		*/
+		
+		
+		/*Image Rotator*/
+		
+		$(function() {
+            // create the image rotator
+            setInterval("rotateImages()", 2000);
+        });
+
+        function rotateImages() {
+            var oCurPhoto = $('#photoShow div.current');
+            var oNxtPhoto = oCurPhoto.next();
+            if (oNxtPhoto.length == 0)
+                oNxtPhoto = $('#photoShow div:first');
+
+            oCurPhoto.removeClass('current').addClass('previous');
+            oNxtPhoto.css({ opacity: 0.0 }).addClass('current').animate({ opacity: 1.0 }, 1000,
+                function() {
+                    oCurPhoto.removeClass('previous');
+                });
+        }
+		
+		/*Sliding*/
+		$(function() {
+            $("#slideup").click(function() {
+                $("#Sliding").slideUp("normal");
+            });
+            $("#slidedown").click(function() {
+                $("#Sliding").slideDown("normal");
+            });
+            $("#slidetoggle").click(function() {
+                $("#Sliding").slideToggle("slow");
+            });
+        });
+        
+		/*Fading*/
+		$(function() {
+			$("#Fading").css('background-color','#DDDEFF');
+			var div = $("#Fading");
+			
+            $("#fadein").click(function() {
+                $(div).fadeIn("normal");
+            });
+            $("#fadeout").click(function() {
+                $("#Fading").fadeOut("slow");
+            });
+            $("#fadeto3").click(
+				function() {
+                 this.toggle = !this.toggle;
+        		 $("#Fading").stop().fadeTo(300, this.toggle ? 0.3 : 1);	
+           		 }
+			);
+            $("#fadeup").click(function() {
+                $("#Fading").fadeToggle("slow", "linear");
+            });
+        });
+		
+		/*animation*/
+		$(function() {
+			//toggle width
+		
+    
+    		$(this).data('original-Width', $("#Animate").css('width'));
+			var originalWidth = $(this).data('original-Width');
+    		
+			$("#right").click(function(){
+				var toggleWidth = $("#Animate").width() == 500 ? originalWidth : "500px";
+        		$('#Animate').animate({ width: toggleWidth });
+			});
+			
+			//toggle font size
+		    
+			//$(this).data('original-size', $("p").css('font-size'));
+    		//var originalSize = parseInt($(this).data('original-size'));
+    		var fontSizes = [100, 200];
+    		$("#text").click(function () {
+        	$('#Animate').animate({
+            	fontSize: fontSizes[1] + '%'
+       		 }, 1000);
+    			fontSizes.reverse();
+			});
+			
+			 //toggle move
+    		 var toggleLeft = [0, 500];
+             $("#Move").click(
+			 	function() {
+					$("#Animate").animate({ left: toggleLeft[1] 
+					}, 1000, "swing");
+					toggleLeft.reverse();
+            	}
+				
+			);
+			
+			//reset
+			$( "#go4" ).click(function() {
+			  $( "div" ).css({
+				width: "",
+				fontSize: "",
+				borderWidth: "",
+				left:""
+			  });
+			});
+        });
+		
+		
+		
+		/*text magnifier*/
+		$(function() {
+			$("#TextMag").css('background-color','#DDDEFF');
+    	$('#incfont').click(function () {
+			curSize = parseInt($('#TextMag').css('font-size')) + 2;
+			if (curSize <= 20)
+			$('#TextMag').css('font-size', curSize);
+    	});
+
+   		$('#decfont').click(function () {
+			curSize = parseInt($('#TextMag').css('font-size')) - 2;
+			if (curSize >= 12)
+			$('#TextMag').css('font-size', curSize);
+    	});
+		
+		
+		
+		
+		
+	});
+	
+	</script> 
+<script type="text/javascript">
+        $(function(){
+            buildBookmarks('h4', 'header');
+        });
+
+        function buildBookmarks(strWhichTag, sBookMarkNode) {
+            var i;
+            var cAnchorCount = 0;
+
+            // create the list that will hold the bookmark links
+            var oList = $("<ul id='bookmarksList'>");
+
+            // for each one of the header tags, create a new named anchor and insert it into
+            // the header tag. Then add a new link to the list that points to the named anchor
+            $(strWhichTag).each(function() {
+                $(this).html("<a name='bookmark" + cAnchorCount + "'></a>" + $(this).html());
+				//html set the content of html element
+                oList.append($("<li><a href='#bookmark" + cAnchorCount + "'> " + $(this).text() + "</a></li>"));
+				//create list of content 
+				cAnchorCount++;
+				//increase counter once done with one div
+            });
+
+            // now find the ID of the bookmark container and append it
+            $("#" + sBookMarkNode).append(oList);
+        }
+		
+    </script>
+</body>
+</html>
